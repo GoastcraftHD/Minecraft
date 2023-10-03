@@ -20,3 +20,6 @@
 #include <array>
 #include <unordered_map>
 #include <unordered_set>
+
+#include "Minecraft/Core/Core.h"
+#include "Minecraft/Core/Assert.h"
