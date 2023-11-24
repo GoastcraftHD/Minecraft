@@ -38,7 +38,7 @@ jobs:
     - name: Setup
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        cd scripts
+        cd ../scripts
         Win-GenerateProjects.bat
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
