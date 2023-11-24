@@ -39,7 +39,7 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
         cd scripts
-        Win-GenerateProjects.bat
+        ./Win-GenerateProjects.bat
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: MSBuild ${{env.SOLUTION_FILE_PATH}} /m /p:Configuration=${{matrix.build-configuration}} -fl -flp:logfile=logs/Build-${{matrix.build-configuration}}.log
