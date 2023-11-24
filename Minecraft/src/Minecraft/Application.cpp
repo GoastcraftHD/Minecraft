@@ -1,16 +1,19 @@
 #include "MinecraftPCH.h"
 #include "Application.h"
 
-#include "Window.h"
 #include "Minecraft/Renderer/Shader.h"
+#include "Core/Input.h"
 
 #include <glad/glad.h>
 
 namespace Minecraft
 {
+	Application* Application::s_Instance = nullptr;
+
 	Application::Application()
 		: m_Window("Minecraft", 1920, 1080)
 	{
+		s_Instance = this;
 	}
 
 	void Application::Run()
@@ -21,7 +24,7 @@ namespace Minecraft
 			0.0f, 0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f
 		};
-
+		
 		uint32_t VAO;
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
@@ -39,7 +42,7 @@ namespace Minecraft
 		shader.Add("assets/shaders/Default.frag", ShaderType::FRAGMENT);
 
 		shader.Compile();
-
+		
 		while (true)
 		{
 			glfwPollEvents();
@@ -49,6 +52,9 @@ namespace Minecraft
 			shader.Bind();
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
+
+			if (Input::IsKeyPressed(KeyCode::E))
+				MINECRAFT_CORE_TRACE("Test");
 
 			glfwSwapBuffers(m_Window.GetNativeWindow());
 		}

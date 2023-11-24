@@ -14,6 +14,7 @@ namespace Minecraft
 
 		void SetVSync(bool enabled);
 		bool IsVSync() const { return m_IsVSync; }
+
 	private:
 		bool m_IsVSync = false;
 		GLFWwindow* m_NativeWindow;

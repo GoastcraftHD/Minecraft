@@ -10,7 +10,10 @@ namespace Minecraft
 		Application();
 		void Run();
 
+		Window& GetWindow() { return m_Window; }
+		static Application& Get() { return *s_Instance; }
 	private:
 		Window m_Window;
+		static Application* s_Instance;
 	};
 }

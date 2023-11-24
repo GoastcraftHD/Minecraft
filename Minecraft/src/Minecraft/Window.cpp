@@ -44,6 +44,4 @@ namespace Minecraft
 
 		m_IsVSync = enabled;
 	}
-
-
 }
