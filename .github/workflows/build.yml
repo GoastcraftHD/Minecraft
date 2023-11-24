@@ -1,0 +1,45 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: "Minecraft.sln"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build-configuration: [Debug, Release, Dist]
+        # Add Windows and Linux
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ''
+        submodules: true
+        lfs: true
+    - uses: microsoft/setup-msbuild@v1.1
+      with:
+        msbuild-architecture: x64
+    - name: Setup
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        cd scripts
+        Win-GenerateProjects.bat
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: MSBuild ${{env.SOLUTION_FILE_PATH}} /m /p:Configuration=${{matrix.build-configuration}} -fl -flp:logfile=logs/Build-${{matrix.build-configuration}}.log
