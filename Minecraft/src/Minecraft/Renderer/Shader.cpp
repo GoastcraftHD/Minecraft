@@ -73,34 +73,34 @@ namespace Minecraft
 			std::cerr << "Error in " << ShaderTypeToString(type) << " shader: " << infoLog << std::endl;
 		}
 
-		m_ShaderIDs.emplace_back(shader);
+		ShaderIDs.emplace_back(shader);
 	}
 
 	void Shader::Compile()
 	{
-		m_ProgramID = glCreateProgram();
+		ProgramID = glCreateProgram();
 
-		for (uint32_t shaderID : m_ShaderIDs)
+		for (uint32_t shaderID : ShaderIDs)
 		{
-			glAttachShader(m_ProgramID, shaderID);
+			glAttachShader(ProgramID, shaderID);
 		}
 
-		glLinkProgram(m_ProgramID);
+		glLinkProgram(ProgramID);
 
 		int success;
 		char infoLog[512];
-		glGetProgramiv(m_ProgramID, GL_LINK_STATUS, &success);
+		glGetProgramiv(ProgramID, GL_LINK_STATUS, &success);
 
 		if (!success)
 		{
-			glGetProgramInfoLog(m_ProgramID, 512, nullptr, infoLog);
+			glGetProgramInfoLog(ProgramID, 512, nullptr, infoLog);
 			std::cerr << "Error in shader program: " << infoLog << std::endl;
 		}
 	}
 
 	void Shader::Bind()
 	{
-		glUseProgram(m_ProgramID);
+		glUseProgram(ProgramID);
 	}
 
 	void Shader::Unbind()

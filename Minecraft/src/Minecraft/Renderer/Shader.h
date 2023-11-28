@@ -1,5 +1,7 @@
 #pragma once
 
+//TODO Needs a total rewrite!!!!!!
+
 namespace Minecraft
 {
 	enum class ShaderType
@@ -10,6 +12,9 @@ namespace Minecraft
 	class Shader
 	{
 	public:
+		uint32_t ProgramID;
+		std::vector<uint32_t> ShaderIDs;
+
 		Shader() = default;
 
 		void Add(const char* shaderSource, ShaderType type);
@@ -17,10 +22,6 @@ namespace Minecraft
 
 		void Bind();
 		void Unbind();
-
-	private:
-		uint32_t m_ProgramID;
-		std::vector<uint32_t> m_ShaderIDs;
 	};
 
 }

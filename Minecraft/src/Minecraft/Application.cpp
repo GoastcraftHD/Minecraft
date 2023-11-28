@@ -3,8 +3,12 @@
 
 #include "Minecraft/Renderer/Shader.h"
 #include "Core/Input.h"
+#include "Renderer/Camera.h"
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Minecraft
 {
@@ -18,10 +22,14 @@ namespace Minecraft
 
 	void Application::Run()
 	{
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CW);
+		glCullFace(GL_BACK);
+
 		float vertices[3 * 3] =
 		{
 			-0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f,
+			0.0f, 10.5f, 0.0f,
 			0.5f, -0.5f, 0.0f
 		};
 		
@@ -42,7 +50,13 @@ namespace Minecraft
 		shader.Add("assets/shaders/Default.frag", ShaderType::FRAGMENT);
 
 		shader.Compile();
-		
+
+		Camera cam;
+
+		float currentFrameTime = glfwGetTime();
+		float lastFrameTime = currentFrameTime;
+		float deltaTime;
+
 		while (true)
 		{
 			glfwPollEvents();
@@ -50,6 +64,25 @@ namespace Minecraft
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			shader.Bind();
+
+			currentFrameTime = glfwGetTime();
+			deltaTime = currentFrameTime - lastFrameTime;
+			lastFrameTime = currentFrameTime;
+
+			if (Input::IsKeyPressed(KeyCode::W))
+				cam.Position += glm::vec3(0.0f, 0.0f, -1.0f) * deltaTime;
+
+			if (Input::IsKeyPressed(KeyCode::S))
+				cam.Position += glm::vec3(0.0f, 0.0f, 1.0f) * deltaTime;
+
+			if (Input::IsKeyPressed(KeyCode::D))
+				cam.Position += glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime;
+
+			if (Input::IsKeyPressed(KeyCode::A))
+				cam.Position += glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime;
+
+			cam.Update(shader.ProgramID);
+
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
