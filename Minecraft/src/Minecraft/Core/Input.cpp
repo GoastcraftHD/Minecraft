@@ -12,4 +12,21 @@ namespace Minecraft
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
+	glm::vec2 Input::GetMousePos()
+	{
+		double xPos, yPos;
+		glfwGetCursorPos(Application::Get().GetWindow().GetNativeWindow(), &xPos, &yPos);
+		return glm::vec2(xPos, yPos);
+	}
+
+	float Input::GetMouseX()
+	{
+		return GetMousePos().x;
+	}
+
+	float Input::GetMouseY()
+	{
+		return GetMousePos().y;
+	}
+
 }

@@ -26,6 +26,8 @@ namespace Minecraft
 		glFrontFace(GL_CW);
 		glCullFace(GL_BACK);
 
+		glfwSetInputMode(m_Window.GetNativeWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 		float vertices[3 * 3] =
 		{
 			-0.5f, -0.5f, 0.0f,
@@ -57,7 +59,9 @@ namespace Minecraft
 		float lastFrameTime = currentFrameTime;
 		float deltaTime;
 
-		while (true)
+		float movementSpeed = 5.0f;
+
+		while (!glfwWindowShouldClose(m_Window.GetNativeWindow()))
 		{
 			glfwPollEvents();
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -70,24 +74,23 @@ namespace Minecraft
 			lastFrameTime = currentFrameTime;
 
 			if (Input::IsKeyPressed(KeyCode::W))
-				cam.Position += glm::vec3(0.0f, 0.0f, -1.0f) * deltaTime;
+				cam.Position += glm::vec3(0.0f, 0.0f, -1.0f) * movementSpeed * deltaTime;
 
 			if (Input::IsKeyPressed(KeyCode::S))
-				cam.Position += glm::vec3(0.0f, 0.0f, 1.0f) * deltaTime;
+				cam.Position += glm::vec3(0.0f, 0.0f, 1.0f) * movementSpeed * deltaTime;
 
 			if (Input::IsKeyPressed(KeyCode::D))
-				cam.Position += glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime;
+				cam.Position += glm::vec3(1.0f, 0.0f, 0.0f) * movementSpeed * deltaTime;
 
 			if (Input::IsKeyPressed(KeyCode::A))
-				cam.Position += glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime;
+				cam.Position += glm::vec3(-1.0f, 0.0f, 0.0f) * movementSpeed * deltaTime;
+
+			cam.Rotation = -glm::vec3(Input::GetMouseX() * 0.1, Input::GetMouseY() * 0.1, 0.0f);
 
 			cam.Update(shader.ProgramID);
 
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
-
-			if (Input::IsKeyPressed(KeyCode::E))
-				MINECRAFT_CORE_TRACE("Test");
 
 			glfwSwapBuffers(m_Window.GetNativeWindow());
 		}

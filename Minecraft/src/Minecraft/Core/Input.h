@@ -1,6 +1,8 @@
 #pragma once
 #include "Minecraft/Window.h"
 
+#include <glm/glm.hpp>
+
 namespace Minecraft
 {
 	namespace KeyCode
@@ -145,5 +147,9 @@ namespace Minecraft
 	{
 	public:
 		static bool IsKeyPressed(KeyCode::Key key);
+
+		static glm::vec2 GetMousePos();
+		static float GetMouseX();
+		static float GetMouseY();
 	};
 }
